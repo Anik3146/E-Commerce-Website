@@ -1,6 +1,5 @@
 import { useTranslation } from "next-i18next";
 import { Breadcrumb, NarrowContainer } from "~/components";
-import MetaverseMallHero from "~/components/ui/Hero/MetaverseMallHeroSection";
 import { DefaultLayout } from "~/layouts";
 
 export default function MetaverseMall() {

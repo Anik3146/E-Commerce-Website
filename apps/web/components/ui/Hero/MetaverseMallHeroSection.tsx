@@ -1,30 +1,12 @@
+import Spinner from "./Spinner";
 import { useEffect, useState } from "react";
 import { BsSliders2 } from "react-icons/bs";
 import { FaRegCalendarTimes } from "react-icons/fa";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoIosArrowDropup } from "react-icons/io";
 import { LuCalendarClock } from "react-icons/lu";
+import MallData from "~/models/mallModel";
 import baseUrl from "~/utils/constant";
-
-interface MallData {
-  address: string;
-  created_at: string;
-  email: string;
-  id: number;
-  lat: number;
-  level: number;
-  levels: any[];
-  long: number;
-  mall_type: string;
-  name: string;
-  offday: string;
-  password: string;
-  phone: string;
-  thumbnail: string;
-  token: any;
-  updated_at: string;
-  username: string;
-}
 
 export default function MetaverseMallHero() {
   const [data, setData] = useState<MallData[]>([]);
@@ -55,12 +37,13 @@ export default function MetaverseMallHero() {
   }, []);
 
   useEffect(() => {
-    if (data.length > 0) console.log(data[0].thumbnail); // Call fetchData when component mounts
+    if (data.length > 0) setLoading(false); // Call fetchData when component mounts
   }, [data]);
 
   return (
     <div>
       {/* Shopping mall section */}
+
       <div className="py-12 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-6">
@@ -85,6 +68,7 @@ export default function MetaverseMallHero() {
             </div>
           </div>
           {/* Grid for cards */}
+          {loading && <Spinner />}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Map through sample data */}
 
@@ -97,7 +81,7 @@ export default function MetaverseMallHero() {
                   <img
                     src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/05/d3/dd/d2/jamuna-future-park.jpg?w=1200&h=-1&s=1"
                     alt="Shopping Mall"
-                    className="w-full h-60 object-cover rounded-t-lg"
+                    className="w-full  h-100 object-cover rounded-t-lg"
                   />
                   <div className="absolute top-5 right-0 flex items-center">
                     <div className="bg-gray-600 bg-opacity-50 py-1 px-2 rounded-l-lg flex items-center">
@@ -119,7 +103,7 @@ export default function MetaverseMallHero() {
                         {mall.level}
                       </span>
                     </div>
-                    <button className="bg-gray-100 text-primary-2 px-3 py-1 rounded hover:bg-gray-600">
+                    <button className="bg-gray-100 text-primary-2 px-3 py-1 rounded font-semibold text-md hover:bg-gray-600 hover:text-white">
                       See Map
                     </button>
                   </div>
@@ -133,8 +117,8 @@ export default function MetaverseMallHero() {
                   </p>
 
                   <a
-                    href="#"
-                    className="text-blue-500 inline-block mt-2 hover:underline"
+                    href=""
+                    className="text-blue-500 inline-block mt-2 hover:underline active:underline"
                   >
                     View Details
                   </a>
@@ -143,20 +127,21 @@ export default function MetaverseMallHero() {
             ))}
           </div>
           {/* Show more button */}
-
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={toggleShowMore}
-              className="relative bg-blue-500 text-white px-4 py-2 rounded-md flex items-center justify-center space-x-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 z-10"
-            >
-              <span>{showMore ? "Show Less" : "Show More"}</span>
-              {showMore ? (
-                <IoIosArrowDropup className="text-xl" />
-              ) : (
-                <IoIosArrowDropdown className="text-xl" />
-              )}
-            </button>
-          </div>
+          {!loading && (
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={toggleShowMore}
+                className="relative bg-blue-500 text-white px-4 py-2 z-auto rounded-md flex items-center justify-center space-x-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 z-10"
+              >
+                <span>{showMore ? "Show Less" : "Show More"}</span>
+                {showMore ? (
+                  <IoIosArrowDropup className="text-xl" />
+                ) : (
+                  <IoIosArrowDropdown className="text-xl" />
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
