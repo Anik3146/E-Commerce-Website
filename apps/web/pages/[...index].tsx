@@ -48,8 +48,15 @@ export default function CategoryPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const breadcrumbs: Breadcrumb[] = [
     { name: t("Home"), link: "/" },
-    { name: t(`All Products`), link: `/category` },
+    { name: t(`${query.index[0]}`), link: `/shopping-mall/${query.index[0]}` },
   ];
+
+  if (query.index.length > 2) {
+    breadcrumbs.push({
+      name: t(`${query.index[1]}`),
+      link: `/${query.index[0]}/${query.index[1]}/${query.index[2]}`,
+    });
+  }
 
   const fetchData = async () => {
     try {
@@ -73,6 +80,19 @@ export default function CategoryPage() {
     fetchData();
   }, []); // Empty dependency array to run only on mount
 
+  useEffect(() => {
+    if (shopData.length > 0 && query.index.length > 2) {
+      const foundItem = shopData.find((item) => item.name === query.index[2]);
+      if (foundItem) {
+        setItem(foundItem);
+      }
+    }
+
+    fetchCategories();
+  }, [shopData, query.index]);
+
+  useEffect(() => {}, [item]);
+
   const { data: productsCatalog } = useProducts();
 
   if (!productsCatalog) {
@@ -87,8 +107,50 @@ export default function CategoryPage() {
       href: "/category",
     })
   );
-
-  return (
-    <DefaultLayout breadcrumbs={breadcrumbs}>All products page</DefaultLayout>
-  );
+  if (query.index.length > 2) {
+    return (
+      <DefaultLayout breadcrumbs={breadcrumbs}>
+        <Head>
+          <title>{`Thikana`}</title>
+        </Head>
+        <NarrowContainer>
+          <div className="md:grid gap-x-6 grid-areas-product-page grid-cols-product-page">
+            <section className="grid-in-left-top md:h-full xl:max-h-[700px]"></section>
+            <section className="mb-10 grid-in-right md:mb-0">
+              <PurchaseCard product={item} />{" "}
+            </section>
+            <section className="grid-in-left-bottom md:mt-8"></section>
+            <Divider className="mt-4 mb-2" />
+            <ProductProperties />
+            <Divider className="mt-4 mb-2 md:mt-8" />
+            <ProductAccordion />
+          </div>
+          <section className="mx-4 mt-28 mb-20"></section>
+        </NarrowContainer>
+      </DefaultLayout>
+    );
+  } else {
+    return (
+      <DefaultLayout breadcrumbs={breadcrumbs}>
+        <CategoryPageContent
+          title={t(`${query.index[1]}`)}
+          products={shopData}
+          totalProducts={shopData.length}
+          query={query}
+          sidebar={
+            <>
+              <CategoryTree
+                parent={{ name: t("allProducts"), href: `${query.index}` }}
+                categories={categoriesList}
+              />
+              <CategorySorting />
+              <CategoryFilters facets={facets} />
+            </>
+          }
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      </DefaultLayout>
+    );
+  }
 }

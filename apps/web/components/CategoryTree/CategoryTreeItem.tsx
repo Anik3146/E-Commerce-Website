@@ -1,12 +1,9 @@
 import { SfCounter, SfListItem } from "@storefront-ui/react";
 import Link from "next/link";
 import type { CategoryTreeItemProps } from "~/components";
+import { categories } from "~/mocks";
 
-export function CategoryTreeItem({
-  name,
-  count,
-  href,
-}: CategoryTreeItemProps): JSX.Element {
+export function CategoryTreeItem({ name, id, href, count }: any): JSX.Element {
   return (
     <Link href={href} data-testid="category-tree-item">
       <SfListItem
@@ -19,11 +16,8 @@ export function CategoryTreeItem({
             className="text-base md:text-sm capitalize flex items-center"
             data-testid="list-item-menu-label"
           >
-            what
+            {name} {`(${count})`}
           </span>
-          {Number(count) > -1 && (
-            <SfCounter className="md:text-sm font-normal">value</SfCounter>
-          )}
         </span>
       </SfListItem>
     </Link>

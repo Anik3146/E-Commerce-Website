@@ -1,6 +1,7 @@
-import Link from 'next/link';
-import { SfButton, SfLink } from '@storefront-ui/react';
-import { Trans, useTranslation } from 'next-i18next';
+import { SfButton, SfLink } from "@storefront-ui/react";
+import { Trans, useTranslation } from "next-i18next";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   Divider,
   OrderSummary,
@@ -8,28 +9,45 @@ import {
   CheckoutPayment,
   ContactInformation,
   ShippingMethod,
-} from '~/components';
-import { createGetServerSideProps } from '~/helpers';
-import { useCart } from '~/hooks';
-import { CheckoutLayout } from '~/layouts';
+} from "~/components";
+import { createGetServerSideProps } from "~/helpers";
+import { useCart } from "~/hooks";
+import { CheckoutLayout } from "~/layouts";
+import { useCartStore } from "~/store/cart";
 
 export const getServerSideProps = createGetServerSideProps(
-  { i18nNamespaces: ['cart', 'checkout', 'address'] },
+  { i18nNamespaces: ["cart", "checkout", "address"] },
   async (context) => {
-    context.res.setHeader('Cache-Control', 'no-cache');
-  },
+    context.res.setHeader("Cache-Control", "no-cache");
+  }
 );
 
 export default function Checkout() {
-  const { t } = useTranslation('checkout');
-  const { data: cart } = useCart();
+  const { t } = useTranslation("checkout");
+  const { cart, count, add, remove, removeAll } = useCartStore();
+  const [total, setTotal] = useState(0);
+
+  const getTotalPrice = () => {
+    let newTotal = 0;
+    for (let i = 0; i < cart.length; i++) {
+      newTotal += cart[i].selling_price * cart[i].count;
+    }
+    setTotal(newTotal);
+  };
+  useEffect(() => {
+    getTotalPrice();
+  }, []);
 
   if (!cart) {
     return null;
   }
 
   return (
-    <CheckoutLayout backHref="/cart" backLabel={t('back')} heading={t('checkout')}>
+    <CheckoutLayout
+      backHref="/cart"
+      backLabel={t("back")}
+      heading={t("checkout")}
+    >
       <div className="md:grid md:grid-cols-12 md:gap-x-6">
         <div className="col-span-7 mb-10 md:mb-0">
           <Divider className="w-screen md:w-auto -mx-4 md:mx-0" />
@@ -37,28 +55,40 @@ export default function Checkout() {
           <Divider className="w-screen md:w-auto -mx-4 md:mx-0" />
 
           <CheckoutAddress
-            heading={t('address:billing.heading')}
-            description={t('address:billing.description')}
-            buttonText={t('address:billing.addButton')}
+            heading={t("address:billing.heading")}
+            description={t("address:billing.description")}
+            buttonText={t("address:billing.addButton")}
             type="billingAddress"
           />
           <Divider className="w-screen md:w-auto -mx-4 md:mx-0" />
           <CheckoutAddress
-            heading={t('address:shipping.heading')}
-            description={t('address:shipping.description')}
-            buttonText={t('address:shipping.addButton')}
+            heading={t("address:shipping.heading")}
+            description={t("address:shipping.description")}
+            buttonText={t("address:shipping.addButton")}
             type="shippingAddress"
           />
           <Divider className="w-screen md:w-auto -mx-4 md:mx-0" />
           <ShippingMethod />
           <Divider className="w-screen md:w-auto -mx-4 md:mx-0" />
-          <CheckoutPayment activePayment="credit-card" onPaymentChange={() => {}} />
+          <CheckoutPayment
+            activePayment="credit-card"
+            onPaymentChange={() => {}}
+          />
           <Divider className="w-screen md:w-auto -mx-4 md:mx-0 mb-10" />
         </div>
-        <OrderSummary cart={cart} className="col-span-5 md:sticky md:top-20 h-fit">
+        <OrderSummary
+          cart={cart}
+          className="col-span-5 md:sticky md:top-20 h-fit"
+          total={total}
+        >
           <>
-            <SfButton as={Link} href="/order/success" size="lg" className="w-full mb-4 md:mb-0">
-              {t('placeOrder')}
+            <SfButton
+              as={Link}
+              href="/order/success"
+              size="lg"
+              className="w-full mb-4 md:mb-0"
+            >
+              {t("placeOrder")}
             </SfButton>
             <p className="text-sm text-center mt-4 pb-4 md:pb-0">
               <Trans ns="checkout" i18nKey="termsInfo">

@@ -1,15 +1,20 @@
-import { useRef, useState } from 'react';
-import { useTimeoutFn, useIntersection, useMedia } from 'react-use';
-import Image from 'next/image';
-import { SfButton, SfIconChevronLeft, SfIconChevronRight, SfScrollable } from '@storefront-ui/react';
-import { clamp, type SfScrollableOnScrollData } from '@storefront-ui/shared';
-import classNames from 'classnames';
-import { useTranslation } from 'next-i18next';
-import { GalleryProps } from './types';
+import { GalleryProps } from "./types";
+import {
+  SfButton,
+  SfIconChevronLeft,
+  SfIconChevronRight,
+  SfScrollable,
+} from "@storefront-ui/react";
+import { clamp, type SfScrollableOnScrollData } from "@storefront-ui/shared";
+import classNames from "classnames";
+import { useTranslation } from "next-i18next";
+import Image from "next/image";
+import { useRef, useState } from "react";
+import { useTimeoutFn, useIntersection, useMedia } from "react-use";
 
 export function Gallery({ images, className, ...attributes }: GalleryProps) {
-  const { t } = useTranslation('product');
-  const isTabletScreen = useMedia('(min-width: 768px)', false);
+  const { t } = useTranslation("product");
+  const isTabletScreen = useMedia("(min-width: 768px)", false);
   const thumbnailsReference = useRef<HTMLDivElement>(null);
   const firstThumbnailReference = useRef<HTMLButtonElement>(null);
   const lastThumbnailReference = useRef<HTMLButtonElement>(null);
@@ -18,13 +23,13 @@ export function Gallery({ images, className, ...attributes }: GalleryProps) {
 
   const firstVisibleThumbnail = useIntersection(firstThumbnailReference, {
     root: thumbnailsReference.current,
-    rootMargin: '0px',
+    rootMargin: "0px",
     threshold: 1,
   });
 
   const lastVisibleThumbnail = useIntersection(lastThumbnailReference, {
     root: thumbnailsReference.current,
-    rootMargin: '0px',
+    rootMargin: "0px",
     threshold: 1,
   });
 
@@ -56,7 +61,10 @@ export function Gallery({ images, className, ...attributes }: GalleryProps) {
   return (
     <div
       {...attributes}
-      className={classNames('flex-col md:flex-row h-full flex relative scroll-smooth md:gap-4', className)}
+      className={classNames(
+        "flex-col md:flex-row h-full flex relative scroll-smooth md:gap-4",
+        className
+      )}
     >
       <div
         className="after:block after:pt-[100%] flex-1 relative overflow-hidden w-full max-h-[600px]"
@@ -72,9 +80,12 @@ export function Gallery({ images, className, ...attributes }: GalleryProps) {
           onScroll={onScroll}
         >
           {images.map((image, index) => (
-            <div className="w-full h-full relative snap-center snap-always basis-full shrink-0 grow" key={image.url}>
+            <div
+              className="w-full h-full relative snap-center snap-always basis-full shrink-0 grow"
+              key={image.url}
+            >
               <Image
-                alt={image.alt ?? ''}
+                alt={image.alt ?? ""}
                 aria-hidden={activeIndex !== index}
                 fill
                 className="object-contain"
@@ -103,11 +114,11 @@ export function Gallery({ images, className, ...attributes }: GalleryProps) {
               size="sm"
               square
               className={classNames(
-                'absolute !rounded-full bg-white z-10 top-4 rotate-90 disabled:!hidden !ring-neutral-500 !text-neutral-500',
-                { hidden: firstVisibleThumbnail?.isIntersecting },
+                "absolute !rounded-full bg-white z-10 top-4 rotate-90 disabled:!hidden !ring-neutral-500 !text-neutral-500",
+                { hidden: firstVisibleThumbnail?.isIntersecting }
               )}
               slotPrefix={<SfIconChevronLeft />}
-              aria-label={t('gallery.prev')}
+              aria-label={t("gallery.prev")}
             />
           }
           slotNextButton={
@@ -116,11 +127,11 @@ export function Gallery({ images, className, ...attributes }: GalleryProps) {
               size="sm"
               square
               className={classNames(
-                'absolute !rounded-full bg-white z-10 bottom-4 rotate-90 disabled:!hidden !ring-neutral-500 !text-neutral-500',
-                { hidden: lastVisibleThumbnail?.isIntersecting },
+                "absolute !rounded-full bg-white z-10 bottom-4 rotate-90 disabled:!hidden !ring-neutral-500 !text-neutral-500",
+                { hidden: lastVisibleThumbnail?.isIntersecting }
               )}
               slotPrefix={<SfIconChevronRight />}
-              aria-label={t('gallery.next')}
+              aria-label={t("gallery.next")}
             />
           }
         >
@@ -130,15 +141,26 @@ export function Gallery({ images, className, ...attributes }: GalleryProps) {
               key={image.url}
               type="button"
               aria-current={activeIndex === index}
-              aria-label={t('gallery.thumb', { index: index + 1 })}
+              aria-label={t("gallery.thumb", { index: index + 1 })}
               className={classNames(
-                'w-20 h-[88px] relative shrink-0 pb-1 border-b-4 snap-start cursor-pointer transition-colors flex-grow-0',
-                [activeIndex === index ? 'border-primary-700' : 'border-transparent'],
+                "w-20 h-[88px] relative shrink-0 pb-1 border-b-4 snap-start cursor-pointer transition-colors flex-grow-0",
+                [
+                  activeIndex === index
+                    ? "border-primary-700"
+                    : "border-transparent",
+                ]
               )}
               onMouseOver={() => onChangeIndex(index)}
               onFocus={() => onChangeIndex(index)}
             >
-              <Image alt="" className="object-contain" width="80" height="80" src={image.url} quality={80} />
+              <Image
+                alt=""
+                className="object-contain"
+                width="80"
+                height="80"
+                src={image.url}
+                quality={80}
+              />
             </button>
           ))}
         </SfScrollable>
@@ -148,10 +170,15 @@ export function Gallery({ images, className, ...attributes }: GalleryProps) {
               key={image.url}
               type="button"
               aria-current={activeIndex === index}
-              aria-label={t('gallery.thumb', { index: index + 1 })}
-              className={classNames('relative shrink-0 pb-1 border-b-4 cursor-pointer transition-colors flex-grow ', [
-                activeIndex === index ? 'border-primary-700' : 'border-neutral-200',
-              ])}
+              aria-label={t("gallery.thumb", { index: index + 1 })}
+              className={classNames(
+                "relative shrink-0 pb-1 border-b-4 cursor-pointer transition-colors flex-grow ",
+                [
+                  activeIndex === index
+                    ? "border-primary-700"
+                    : "border-neutral-200",
+                ]
+              )}
               onClick={() => onChangeIndex(index)}
             />
           ))}

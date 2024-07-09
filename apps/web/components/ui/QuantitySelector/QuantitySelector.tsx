@@ -1,9 +1,9 @@
-import { useEffect, useId, useRef } from 'react';
-import { useCounter } from 'react-use';
-import { SfButton, SfIconAdd, SfIconRemove } from '@storefront-ui/react';
-import { clamp } from '@storefront-ui/shared';
-import { useTranslation } from 'next-i18next';
-import type { QuantitySelectorProps } from '~/components';
+import { SfButton, SfIconAdd, SfIconRemove } from "@storefront-ui/react";
+import { clamp } from "@storefront-ui/shared";
+import { useTranslation } from "next-i18next";
+import { useEffect, useId, useRef } from "react";
+import { useCounter } from "react-use";
+import type { QuantitySelectorProps } from "~/components";
 
 export function QuantitySelector({
   children,
@@ -12,7 +12,8 @@ export function QuantitySelector({
   minValue = 1,
   maxValue = Number.POSITIVE_INFINITY,
   className,
-}: QuantitySelectorProps) {
+  setCount,
+}: any) {
   const { t } = useTranslation();
   const inputId = useId();
   const firstUpdate = useRef(true);
@@ -24,13 +25,17 @@ export function QuantitySelector({
       return;
     }
 
-    if (typeof onChange === 'function') {
+    if (typeof onChange === "function") {
       onChange(clamp(internalValue, minValue, maxValue));
     }
+    setCount(internalValue);
   }, [internalValue, minValue, maxValue, onChange]);
 
   return (
-    <div data-testid="quantitySelector" className={`inline-flex flex-col items-center ${className}`}>
+    <div
+      data-testid="quantitySelector"
+      className={`inline-flex flex-col items-center ${className}`}
+    >
       <div className="flex border border-neutral-300 rounded-md h-full w-full">
         <SfButton
           data-testid="quantity-selector-decrease-button"
@@ -40,7 +45,7 @@ export function QuantitySelector({
           className="rounded-r-none"
           disabled={internalValue <= minValue}
           aria-controls={inputId}
-          aria-label={t('quantitySelectorDecrease')}
+          aria-label={t("quantitySelectorDecrease")}
           onClick={() => dec()}
         >
           <SfIconRemove />
@@ -55,7 +60,7 @@ export function QuantitySelector({
           max={maxValue}
           value={internalValue}
           onChange={(event) => set(Number.parseInt(event.target.value, 10))}
-          aria-label={t('quantitySelector')}
+          aria-label={t("quantitySelector")}
         />
         <SfButton
           data-testid="quantitySelectorIncreaseButton"
@@ -65,12 +70,13 @@ export function QuantitySelector({
           className="rounded-l-none"
           disabled={internalValue >= maxValue}
           aria-controls={inputId}
-          aria-label={t('quantitySelectorIncrease')}
+          aria-label={t("quantitySelectorIncrease")}
           onClick={() => inc()}
         >
           <SfIconAdd />
         </SfButton>
       </div>
+
       {children}
     </div>
   );

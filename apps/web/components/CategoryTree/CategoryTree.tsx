@@ -1,10 +1,36 @@
 import { CategoryTreeItem } from "./CategoryTreeItem";
 import { SfIconArrowBack } from "@storefront-ui/react";
 import { useTranslation } from "next-i18next";
+import { useEffect, useState } from "react";
 import type { CategoryTreeProps } from "~/components";
+import Category from "~/models/catergoryModel";
 
-export function CategoryTree({ parent, categories }: CategoryTreeProps) {
+export function CategoryTree({ parent, categories }: any) {
   const { t } = useTranslation("category");
+  const [unique, setUnique] = useState<any>([]);
+
+  const retrieveUnique = () => {
+    let categoryMap: any = {};
+
+    categories.forEach((category: any) => {
+      let { id, name } = category;
+      if (categoryMap[id]) {
+        categoryMap[id].count++;
+      } else {
+        categoryMap[id] = {
+          id,
+          name,
+          count: 1,
+        };
+      }
+    });
+    // Update state with unique categories
+    setUnique(categoryMap);
+  };
+
+  useEffect(() => {
+    retrieveUnique();
+  }, [categories]);
 
   return (
     <>
@@ -14,22 +40,11 @@ export function CategoryTree({ parent, categories }: CategoryTreeProps) {
       >
         {t("category")}
       </span>
-      {parent && (
-        <CategoryTreeItem
-          name={
-            <>
-              <SfIconArrowBack size="sm" className="text-neutral-500 mr-2" />
-              {parent.name}
-            </>
-          }
-          count={parent.count}
-          href="/category"
-        />
-      )}
+      <h2 className="ml-3 font-semibold">Items List</h2>
       <div className="mt-4 mb-6 md:mt-2" data-testid="categories">
-        {categories?.map(({ name, count }) => (
+        {Object.values(unique).map(({ id, name, count }: any) => (
           <CategoryTreeItem
-            key={name}
+            key={id}
             name={name}
             count={count}
             href="/category"

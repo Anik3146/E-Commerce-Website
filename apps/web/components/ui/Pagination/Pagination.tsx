@@ -1,18 +1,41 @@
-import { Fragment } from 'react';
-import { SfButton, SfIconChevronLeft, SfIconChevronRight } from '@storefront-ui/react';
-import classNames from 'classnames';
-import { useTranslation } from 'next-i18next';
-import type { PaginationProps } from '~/components';
-import { usePagination } from '~/hooks';
+import {
+  SfButton,
+  SfIconChevronLeft,
+  SfIconChevronRight,
+} from "@storefront-ui/react";
+import classNames from "classnames";
+import { useTranslation } from "next-i18next";
+import { Fragment, useEffect, useState } from "react";
+import type { PaginationProps } from "~/components";
+import { usePagination } from "~/hooks";
 
-export function Pagination({ currentPage, pageSize, totalItems, maxVisiblePages }: PaginationProps) {
-  const { t } = useTranslation('category');
-  const { totalPages, pages, selectedPage, startPage, endPage, next, prev, setPage } = usePagination({
+export function Pagination({
+  currentPage,
+  pageSize,
+  totalItems,
+  maxVisiblePages,
+  setCurrentPage,
+}: any) {
+  const { t } = useTranslation("category");
+  const {
+    totalPages,
+    pages,
+    selectedPage,
+    startPage,
+    endPage,
+    next,
+    prev,
+    setPage,
+  } = usePagination({
     totalItems,
     currentPage,
     pageSize,
     maxPages: maxVisiblePages,
   });
+
+  useEffect(() => {
+    setCurrentPage(selectedPage);
+  }, [selectedPage]);
 
   return (
     <nav
@@ -25,20 +48,21 @@ export function Pagination({ currentPage, pageSize, totalItems, maxVisiblePages 
         type="button"
         size="lg"
         className="gap-3 mt-2"
-        aria-label={t('prevAriaLabel')}
+        aria-label={t("prevAriaLabel")}
         disabled={selectedPage <= 1}
         variant="tertiary"
         slotPrefix={<SfIconChevronLeft />}
         onClick={prev}
       >
-        <span className="hidden sm:inline-flex">{t('prev')}</span>
+        <span className="hidden sm:inline-flex">{t("prev")}</span>
       </SfButton>
       <ul className="flex flex-wrap justify-center">
         {!pages.find((page: number) => page === 1) && (
           <li>
             <div
-              className={classNames('flex pt-1 border-t-4 border-transparent', {
-                'font-medium border-t-4 !border-primary-700': selectedPage === 1,
+              className={classNames("flex pt-1 border-t-4 border-transparent", {
+                "font-medium border-t-4 !border-primary-700":
+                  selectedPage === 1,
               })}
             >
               <button
@@ -84,17 +108,24 @@ export function Pagination({ currentPage, pageSize, totalItems, maxVisiblePages 
             )}
             <li>
               <div
-                className={classNames('flex pt-1 border-t-4 border-transparent', {
-                  'font-medium border-t-4 !border-primary-700': selectedPage === page,
-                })}
+                className={classNames(
+                  "flex pt-1 border-t-4 border-transparent",
+                  {
+                    "font-medium border-t-4 !border-primary-700":
+                      selectedPage === page,
+                  }
+                )}
               >
                 <button
                   type="button"
                   className={classNames(
-                    'px-4 py-3 text-neutral-500 rounded-md hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900',
-                    { '!text-neutral-900 hover:!text-primary-800 active:!text-primary-900': selectedPage === page },
+                    "px-4 py-3 text-neutral-500 rounded-md hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900",
+                    {
+                      "!text-neutral-900 hover:!text-primary-800 active:!text-primary-900":
+                        selectedPage === page,
+                    }
                   )}
-                  aria-label={t('currentPage', { page, totalPages })}
+                  aria-label={t("currentPage", { page, totalPages })}
                   aria-current={selectedPage === page}
                   onClick={() => setPage(page)}
                 >
@@ -107,7 +138,7 @@ export function Pagination({ currentPage, pageSize, totalItems, maxVisiblePages 
                 <div className="flex pt-1 border-t-4 border-transparent">
                   <button
                     type="button"
-                    aria-label={t('secondPageAriaLabel')}
+                    aria-label={t("secondPageAriaLabel")}
                     className="px-4 py-3 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900 "
                     aria-current={selectedPage === 1}
                     onClick={() => setPage(2)}
@@ -122,7 +153,12 @@ export function Pagination({ currentPage, pageSize, totalItems, maxVisiblePages 
         {endPage < totalPages - 1 && (
           <li>
             <div className="flex pt-1 border-t-4 border-transparent">
-              <button type="button" disabled aria-hidden="true" className="px-4 py-3 rounded-md text-neutral-500">
+              <button
+                type="button"
+                disabled
+                aria-hidden="true"
+                className="px-4 py-3 rounded-md text-neutral-500"
+              >
                 ...
               </button>
             </div>
@@ -131,14 +167,15 @@ export function Pagination({ currentPage, pageSize, totalItems, maxVisiblePages 
         {!pages.find((page: number) => page === totalPages) && (
           <li>
             <div
-              className={classNames('flex pt-1 border-t-4 border-transparent', {
-                'font-medium border-t-4 !border-primary-700': selectedPage === totalPages,
+              className={classNames("flex pt-1 border-t-4 border-transparent", {
+                "font-medium border-t-4 !border-primary-700":
+                  selectedPage === totalPages,
               })}
             >
               <button
                 type="button"
                 className="px-4 py-3 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900 "
-                aria-label={t('lastPageAriaLabel')}
+                aria-label={t("lastPageAriaLabel")}
                 aria-current={totalPages === selectedPage}
                 onClick={() => setPage(totalPages)}
               >
@@ -151,14 +188,14 @@ export function Pagination({ currentPage, pageSize, totalItems, maxVisiblePages 
       <SfButton
         type="button"
         size="lg"
-        aria-label={t('nextAriaLabel')}
+        aria-label={t("nextAriaLabel")}
         disabled={selectedPage >= totalPages}
         variant="tertiary"
         slotSuffix={<SfIconChevronRight />}
         className="gap-3 mt-2"
         onClick={next}
       >
-        <span className="hidden sm:inline-flex">{t('next')}</span>
+        <span className="hidden sm:inline-flex">{t("next")}</span>
       </SfButton>
     </nav>
   );

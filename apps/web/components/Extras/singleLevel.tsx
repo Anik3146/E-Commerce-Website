@@ -1,4 +1,5 @@
 import Spinner from "../ui/Hero/Spinner";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaRegCalendarTimes } from "react-icons/fa";
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io";
@@ -10,6 +11,15 @@ export default function SingleLevel({ data, value }: any) {
 
   const toggleShowMore = () => {
     setShowMore(!showMore);
+  };
+
+  //view details
+  //router section
+  const router = useRouter();
+  const handleViewDetails = (mall: String, name: String) => {
+    //mall is the index for dynamic routing
+
+    router.push(`/${mall}/${name}`);
   };
 
   useEffect(() => {
@@ -76,7 +86,12 @@ export default function SingleLevel({ data, value }: any) {
                       Open 10:00 AM - 8:00 PM
                     </p>
 
-                    <button className="text-blue-500 inline-block mt-2 hover:underline active:underline">
+                    <button
+                      onClick={() =>
+                        handleViewDetails(mall.shopping_mall.name, mall.name)
+                      }
+                      className="text-blue-500 inline-block mt-2 hover:underline active:underline"
+                    >
                       View Details
                     </button>
                   </div>

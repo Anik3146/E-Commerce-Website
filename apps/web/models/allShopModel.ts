@@ -1,0 +1,63 @@
+// Define a type or interface for shop data
+export default interface AllShop {
+  id: number;
+  name: string;
+  user_name: string;
+  shop_name: string;
+  mobile: string;
+  lat: number;
+  long: number;
+  whatsApp: string;
+  email: string;
+  address: string;
+  shop_address: string;
+  shop_logo: string;
+  thumbnail: string;
+  isActive: number;
+  shopping_mall_id: number;
+  shopping_mall_level_id: number;
+  rent_date: string | null;
+  monthly_rent: number | null;
+  advance_pament: number | null;
+  advance_payment_date: string | null;
+  agreement_duration: number | null;
+  created_at: string;
+  updated_at: string;
+  type: string;
+  offer_discount_type: string | null;
+  offer_discount_percent: number | null;
+  offer_banner: string | null;
+  offer_valid_from: string | null;
+  offer_valid_to: string | null;
+  branch_id: number;
+  shop_type_id: number;
+  mall_type: string;
+  token: string | null;
+  shopping_mall: {
+    id: number;
+    name: string;
+    email: string;
+    address: string;
+    phone: string;
+    level: number;
+    thumbnail: string;
+    offday: string;
+    created_at: string;
+    updated_at: string;
+    lat: number;
+    long: number;
+    username: string;
+    password: string;
+    mall_type: string;
+    token: string | null;
+    levels: {
+      id: number;
+      name: string;
+      block_number: string;
+      shopping_mall_id: number;
+      created_at: string;
+      updated_at: string;
+    }[];
+  };
+  merchant_type: string | null;
+}

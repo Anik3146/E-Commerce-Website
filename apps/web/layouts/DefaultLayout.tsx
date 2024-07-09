@@ -30,6 +30,7 @@ import {
 } from "~/components";
 import SearchWithIcon from "~/components/ui/Search/customSearch";
 import { useCart } from "~/hooks";
+import { useCartStore } from "~/store/cart";
 
 type LayoutPropsType = PropsWithChildren & {
   breadcrumbs?: Breadcrumb[];
@@ -40,9 +41,8 @@ export function DefaultLayout({
   breadcrumbs = [],
 }: LayoutPropsType): JSX.Element {
   const { t } = useTranslation();
-  const { data: cart } = useCart();
-  const cartLineItemsCount =
-    cart?.lineItems.reduce((total, { quantity }) => total + quantity, 0) ?? 0;
+  const { cart, count, add, remove, removeAll } = useCartStore();
+  const cartLineItemsCount = count();
   const { close, open, isOpen } = useDisclosure();
   const [activeNode, setActiveNode] = useState<string[]>([]);
   const drawerRef = useRef(null);
@@ -220,7 +220,7 @@ export function DefaultLayout({
 
                 <nav className="hidden md:flex md:flex-row md:flex-nowrap items-center ml-2">
                   <SfButton
-                    className="mr-2 -ml-0.5 text-primary-3  focus:outline-none focus:bg-blue-200  hover:text-white active:bg-primary-900 active:text-white"
+                    className="mr-2 -ml-0.5 text-primary-3   focus:outline-none focus:bg-blue-200  hover:text-white active:bg-primary-900 active:text-white"
                     as={Link}
                     href="/cart"
                     aria-label={`Number in Cart: ${cartLineItemsCount}`}
@@ -230,9 +230,9 @@ export function DefaultLayout({
                       <Badge
                         bordered
                         value={cartLineItemsCount}
-                        className="text-neutral-900 bg-white"
+                        className="text-neutral-900 bg-white text-sm font-bold"
                       >
-                        <SfIconShoppingCart className="text-black" />
+                        <SfIconShoppingCart className="text-black text-lg" />
                       </Badge>
                     }
                   />

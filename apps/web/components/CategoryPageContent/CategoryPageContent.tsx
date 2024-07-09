@@ -1,6 +1,7 @@
 import { SfButton, SfIconTune, useDisclosure } from "@storefront-ui/react";
 import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { useMedia } from "react-use";
 import {
   NarrowContainer,
@@ -9,6 +10,7 @@ import {
   CategorySidebar,
 } from "~/components";
 import type { CategoryPageContentProps } from "~/components";
+import { useCartStore } from "~/store/cart";
 
 const CategoryEmptyState = dynamic(
   () => import("~/components/CategoryEmptyState")
@@ -19,8 +21,11 @@ export function CategoryPageContent({
   sidebar,
   products,
   totalProducts,
-  itemsPerPage = 24,
-}: CategoryPageContentProps): JSX.Element {
+  itemsPerPage = 9,
+  query,
+  currentPage,
+  setCurrentPage,
+}: any): JSX.Element {
   const { t } = useTranslation("category");
   const isWideScreen = useMedia("(min-width: 1024px)", false);
   const isTabletScreen = useMedia("(min-width: 768px)", false);
@@ -31,6 +36,7 @@ export function CategoryPageContent({
     close();
   }
 
+  useEffect(() => {}, [currentPage]);
   return (
     <NarrowContainer>
       <div className="mb-20 px-4 md:px-0" data-testid="category-layout">
@@ -60,28 +66,33 @@ export function CategoryPageContent({
                 className="grid grid-cols-1 2xs:grid-cols-2 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 mb-10 md:mb-5"
                 data-testid="category-grid"
               >
-                {products.map(
-                  ({ id, name, rating, price, primaryImage, slug }, index) => (
+                {/* Assuming pageNo starts from 1 */}
+                {products
+                  .slice((currentPage - 1) * 9, (currentPage - 1) * 9 + 9)
+                  .map(({ id, name, selling_price }: any, index: any) => (
                     <ProductCard
                       key={id}
                       name={name}
-                      ratingCount={rating?.count}
-                      rating={rating?.average}
-                      price={price?.value.amount}
-                      imageUrl={primaryImage?.url}
-                      imageAlt={primaryImage?.alt}
-                      slug={slug}
-                      priority={index === 0}
+                      ratingCount={20} // Example ratingCount value
+                      rating={10} // Example rating value
+                      price={selling_price} // Example price value
+                      imageUrl={""} // Example imageUrl value
+                      imageAlt={"N/A"} // Example imageAlt value
+                      slug={"slug"} // Example slug value
+                      priority={index === 0} // Check if it's the first element on the current page
+                      query={query}
+                      product={products}
+                      index={(currentPage - 1) * itemsPerPage + index}
                     />
-                  )
-                )}
+                  ))}
               </section>
             ) : (
               <CategoryEmptyState />
             )}
             {totalProducts > itemsPerPage && (
               <Pagination
-                currentPage={1}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
                 totalItems={totalProducts}
                 pageSize={itemsPerPage}
                 maxVisiblePages={maxVisiblePages}

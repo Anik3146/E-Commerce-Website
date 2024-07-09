@@ -1,31 +1,36 @@
-import { useState } from 'react';
-import { SfRating, SfIconCheck, SfIconThumbUp, SfIconThumbDown, SfCounter } from '@storefront-ui/react';
-import { useTranslation } from 'next-i18next';
-import type { ReviewProps } from '~/components';
+import {
+  SfRating,
+  SfIconCheck,
+  SfIconThumbUp,
+  SfIconThumbDown,
+  SfCounter,
+} from "@storefront-ui/react";
+import { useTranslation } from "next-i18next";
+import { useState } from "react";
+import type { ReviewProps } from "~/components";
 
-export function Review({ review, ...attributes }: ReviewProps) {
-  const { t } = useTranslation('product');
-  const { createdAt, rating, reviewer, text, title } = review;
+export function Review() {
+  const { t } = useTranslation("product");
 
   const [isCollapsed, setIsCollapsed] = useState(true);
   const charLimit = 400;
-  const isButtonVisible = text?.length || 0 > charLimit;
-  const truncatedContent = isButtonVisible && isCollapsed ? `${text?.slice(0, charLimit)}...` : text;
+  const isButtonVisible = 10 || 0 > charLimit;
+  const truncatedContent = isButtonVisible && isCollapsed ? `yes` : "no";
 
   return (
-    <article className="w-full p-4 border rounded-md mb-4" {...attributes}>
-      <p className="pb-2 font-medium">{title}</p>
+    <article className="w-full p-4 border rounded-md mb-4">
+      <p className="pb-2 font-medium">Title</p>
       <header className="flex flex-col pb-2 md:flex-row md:justify-between">
         <div className="flex flex-col items-start">
           <span className="flex items-center pr-2 text-xs text-neutral-500">
-            <SfRating value={rating as number} max={5} size="xs" className="mr-2" />
-            {new Date(createdAt).toLocaleDateString()}
+            <SfRating value={5 as number} max={5} size="xs" className="mr-2" />
+            date
           </span>
         </div>
         <div className="flex items-end">
           <p className="flex items-center text-xs truncate text-primary-700">
-            <span className="mr-2 text-xs text-neutral-500">{reviewer}</span>
-            <SfIconCheck size="xs" className="mr-1" /> {t('review.verifiedPurchase')}
+            <span className="mr-2 text-xs text-neutral-500">reviewer</span>
+            <SfIconCheck size="xs" className="mr-1" /> verified purchage
           </p>
         </div>
       </header>
@@ -38,7 +43,7 @@ export function Review({ review, ...attributes }: ReviewProps) {
             setIsCollapsed((currentState) => !currentState);
           }}
         >
-          {isCollapsed ? 'Read more' : 'Read less'}
+          {isCollapsed ? "Read more" : "Read less"}
         </button>
       ) : null}
       <footer className="flex items-center justify-between">
@@ -57,8 +62,11 @@ export function Review({ review, ...attributes }: ReviewProps) {
           </button>
         </div>
 
-        <button className="px-3 py-1.5 text-neutral-500 font-medium text-sm hover:text-primary-800" type="button">
-          {t('review.reportAbuse')}
+        <button
+          className="px-3 py-1.5 text-neutral-500 font-medium text-sm hover:text-primary-800"
+          type="button"
+        >
+          report abuse
         </button>
       </footer>
     </article>
