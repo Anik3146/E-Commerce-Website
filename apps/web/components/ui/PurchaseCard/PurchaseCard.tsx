@@ -110,6 +110,7 @@ export function PurchaseCard({ product }: any) {
                 ? "flex-grow-[2] flex-shrink basis-auto whitespace-nowrap"
                 : "flex-grow-[2] flex-shrink basis-auto whitespace-nowrap bg-primary-2"
             }
+            disabled={isButtonClicked}
             slotPrefix={<SfIconShoppingCart size="sm" />}
             onClick={() => handleAddToCart(product)}
           >

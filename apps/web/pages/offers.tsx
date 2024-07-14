@@ -1,16 +1,18 @@
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
+import { BsSliders2 } from "react-icons/bs";
 import { Breadcrumb, NarrowContainer } from "~/components";
 import OfferCard from "~/components/OfferCard";
 import { DefaultLayout } from "~/layouts";
 
-const MetaverseMall = () => {
+const Offers = () => {
   const { t } = useTranslation("offers");
 
   // Example data for offers (replace with actual data from API or state)
   const offers = [
     {
       id: 1,
-      mallName: "Shopping Mall 1",
+      mallName: "Jamuna Future Park",
       shops: [
         { id: 1, shopName: "Shop A", flatDiscount: 20, uptoDiscount: 50 },
         { id: 2, shopName: "Shop B", flatDiscount: 15, uptoDiscount: 40 },
@@ -27,7 +29,7 @@ const MetaverseMall = () => {
     },
     {
       id: 2,
-      mallName: "Shopping Mall 2",
+      mallName: "Bashundhara City",
       shops: [
         { id: 11, shopName: "Shop K", flatDiscount: 18, uptoDiscount: 45 },
         { id: 12, shopName: "Shop L", flatDiscount: 12, uptoDiscount: 35 },
@@ -45,6 +47,15 @@ const MetaverseMall = () => {
     // Add more malls with their respective shops as needed
   ];
 
+  // Extract mall names for select dropdown options
+  const mallNames = offers.map((mall) => mall.mallName);
+
+  const [selectedOption, setSelectedOption] = useState("Show All");
+
+  const handleChange = (event: any) => {
+    setSelectedOption(event.target.value);
+  };
+
   const breadcrumbs = [
     { name: t("Home"), link: "/" },
     { name: t("Offers"), link: "/offers" },
@@ -54,27 +65,71 @@ const MetaverseMall = () => {
     <DefaultLayout breadcrumbs={breadcrumbs}>
       <NarrowContainer>
         <div className="my-8">
-          <h1 className="text-3xl font-bold mb-4">{t("Exclusive Offers")}</h1>
-          {offers.map((mall) => (
-            <div key={mall.id}>
-              <h2 className="text-2xl font-bold mb-2">{mall.mallName}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mall.shops.map((shop) => (
-                  <OfferCard
-                    key={shop.id}
-                    mallName={mall.mallName}
-                    shopName={shop.shopName}
-                    flatDiscount={shop.flatDiscount}
-                    uptoDiscount={shop.uptoDiscount}
-                  />
+          <h1 className="text-3xl font-bold mb-4 mx-2">
+            {t("Exclusive Offers")}
+          </h1>
+          <div className="flex justify-end items-end mt-8 md:mt-0 lg:mt-0 ml-auto mr-2">
+            <h2 className="mr-2 pb-4 font-semibold text-lg">Filter By:</h2>
+            <div className="flex items-center rounded-md bg-gray-300 px-1 py-2 mb-2 xl:mr-8 md:mr-0">
+              <select
+                className="outline-none bg-gray-300"
+                value={selectedOption}
+                onChange={handleChange}
+              >
+                <option value="Show All">Show All</option>
+                {mallNames.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
-          ))}
+          </div>
+
+          {selectedOption == "Show All"
+            ? offers.map((mall) => (
+                <div key={mall.id}>
+                  <h2 className="text-2xl font-bold mb-5 m-4 ">
+                    {mall.mallName}
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {mall.shops.map((shop) => (
+                      <OfferCard
+                        key={shop.id}
+                        mallName={mall.mallName}
+                        shopName={shop.shopName}
+                        flatDiscount={shop.flatDiscount}
+                        uptoDiscount={shop.uptoDiscount}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))
+            : // Show selected mall and its offers
+              offers
+                .filter((mall) => mall.mallName === selectedOption)
+                .map((mall) => (
+                  <div key={mall.id}>
+                    <h2 className="text-2xl font-bold mb-2 m-4">
+                      {mall.mallName}
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {mall.shops.map((shop) => (
+                        <OfferCard
+                          key={shop.id}
+                          mallName={mall.mallName}
+                          shopName={shop.shopName}
+                          flatDiscount={shop.flatDiscount}
+                          uptoDiscount={shop.uptoDiscount}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
         </div>
       </NarrowContainer>
     </DefaultLayout>
   );
 };
 
-export default MetaverseMall;
+export default Offers;

@@ -7,14 +7,29 @@ interface CartItem extends Product {
 
 type CartStore = {
   cart: CartItem[];
+  //orders type
+  orders: Order[];
   count: () => number;
   add: (product: Product, quantity: any) => void;
   remove: (idProduct: number) => void;
   removeAll: () => void;
+  placeOrder: () => void;
+  removeAllOrders: () => void;
+  removeSingleOrder: (orderId: number) => void;
 };
+
+//for order interface
+interface Order {
+  id: number;
+  items: CartItem[];
+  totalPrice: number;
+  date: Date;
+}
 
 export const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
+  //orders array
+  orders: [],
   count: () => {
     const { cart } = get();
     if (cart.length)
@@ -32,6 +47,29 @@ export const useCartStore = create<CartStore>((set, get) => ({
     set({ cart: updatedCart });
   },
   removeAll: () => set({ cart: [] }),
+  placeOrder: () => {
+    const { cart, orders } = get();
+    const totalPrice = cart.reduce(
+      (total, item) => total + item.selling_price * item.count,
+      0
+    );
+    const newOrder: Order = {
+      id: orders.length + 1,
+      items: [...cart],
+      totalPrice,
+      date: new Date(),
+    };
+    set({
+      orders: [...orders, newOrder],
+      cart: [],
+    });
+  },
+  removeAllOrders: () => set({ orders: [] }),
+  removeSingleOrder: (orderId: number) => {
+    const { orders } = get();
+    const updatedOrders = orders.filter((order) => order.id !== orderId);
+    set({ orders: updatedOrders });
+  },
 }));
 
 function updateCart(

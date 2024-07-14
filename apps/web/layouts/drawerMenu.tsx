@@ -5,7 +5,7 @@ import { Badge, Search } from "~/components";
 
 export default function DrawerMenu() {
   return (
-    <ul className="flex flex-wrap list-none p-0 text-black bg-primary md:hidden">
+    <ul className="flex flex-wrap list-none p-0 text-black md:hidden">
       <li className="w-full border-b border-gray-300">
         <a
           href="/"

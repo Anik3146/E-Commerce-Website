@@ -99,6 +99,7 @@ export function ProductCard({
         <SfButton
           type="button"
           size="sm"
+          disabled={isButtonClicked}
           slotPrefix={<SfIconShoppingCart size="sm" />}
           onClick={() => handleAddToCart(product[index])}
           className={isButtonClicked ? "bg-primary-2" : ""}

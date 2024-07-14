@@ -12,7 +12,17 @@ export function OrderSummary({
   total,
 }: any): JSX.Element {
   const { t } = useTranslation("cart");
-  const { cart, count, add, remove, removeAll } = useCartStore();
+  const {
+    cart,
+    count,
+    add,
+    remove,
+    removeAll,
+    orders,
+    placeOrder,
+    removeAllOrders,
+    removeSingleOrder,
+  } = useCartStore();
 
   return (
     <div

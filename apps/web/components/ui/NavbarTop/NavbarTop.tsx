@@ -9,7 +9,7 @@ export function NavbarTop({ children, filled, ...attributes }: NavbarTopProps) {
       className={classNames(
         "h-14 md:h-20 flex z-50 md:sticky md:-top-5 md:pt-2.5 md:shadow-md",
         filled
-          ? "bg-white text-black"
+          ? "bg-transparent text-black backdrop-blur-md bg-opacity-20"
           : "bg-white text-[#02C652] border-b border-neutral-200"
       )}
       data-testid="navbar-top"

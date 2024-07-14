@@ -38,6 +38,10 @@ export default function Checkout() {
     getTotalPrice();
   }, []);
 
+  const handlePlaceOrder = () => {
+    removeAll();
+  };
+
   if (!cart) {
     return null;
   }
@@ -87,6 +91,7 @@ export default function Checkout() {
               href="/order/success"
               size="lg"
               className="w-full mb-4 md:mb-0"
+              onClick={handlePlaceOrder}
             >
               {t("placeOrder")}
             </SfButton>

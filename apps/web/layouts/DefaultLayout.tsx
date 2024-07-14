@@ -12,7 +12,7 @@ import { divide } from "lodash-es";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState, type PropsWithChildren } from "react";
+import { useEffect, useRef, useState, type PropsWithChildren } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaList } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
@@ -61,6 +61,7 @@ export function DefaultLayout({
 
   //For mobile view search bar
   const [searchButtonToggler, setSearchButtonToggler] = useState(false);
+  useEffect(() => {}, [cart]);
 
   return (
     <>
@@ -121,41 +122,40 @@ export function DefaultLayout({
         {/* Mobile drawer */}
         {isOpen && (
           <>
-            <div className="md:hidden fixed inset-0 bg-neutral-500 bg-opacity-50 " />
-
-            <SfDrawer
-              ref={drawerRef}
-              open={isOpen}
-              onClose={close}
-              placement="left"
-              className="md:hidden left-[50px] max-w-full bg-white text-black overflow-y-auto"
-            >
-              <nav>
-                <div className="flex items-center justify-between p-4 border-b border-b-neutral-200 border-b-solid">
-                  <p className="typography-text-base font-medium">
-                    <a href="/">
-                      {" "}
-                      <Image
-                        src="/images/logo.png" // Replace with your image path
-                        alt="Logo"
-                        width={120} // Adjust width as needed
-                        height={150} // Adjust height as needed
-                      />
-                    </a>
-                  </p>
-                  <SfButton
-                    onClick={close}
-                    variant="tertiary"
-                    square
-                    aria-label="Close menu"
-                    className="ml-2"
-                  >
-                    <SfIconClose className="text-neutral-500" />
-                  </SfButton>
-                </div>
-                <DrawerMenu />
-              </nav>
-            </SfDrawer>
+            <div className="md:hidden fixed inset-0 bg-neutral-700 backdrop-blur-md bg-opacity-90 h-screen z-100">
+              <SfDrawer
+                ref={drawerRef}
+                open={isOpen}
+                onClose={close}
+                placement="left"
+                className="md:hidden left-[50px] max-w-full text-black fixed h-screen" // Adjusted className
+              >
+                <nav className="h-full bg-white">
+                  <div className="flex items-center justify-between p-4 border-b border-b-neutral-200 border-b-solid bg-white">
+                    <p className="typography-text-base font-medium">
+                      <a href="/">
+                        <Image
+                          src="/images/logo.png"
+                          alt="Logo"
+                          width={120}
+                          height={150}
+                        />
+                      </a>
+                    </p>
+                    <SfButton
+                      onClick={close}
+                      variant="tertiary"
+                      square
+                      aria-label="Close menu"
+                      className="ml-2"
+                    >
+                      <SfIconClose className="text-neutral-500" />
+                    </SfButton>
+                  </div>
+                  <DrawerMenu />
+                </nav>
+              </SfDrawer>
+            </div>
           </>
         )}
         <div className="">
@@ -283,12 +283,13 @@ export function DefaultLayout({
           <button className="fixed bottom-20 mb-5 right-3 md:right-8 px-5 py-3 md:bottom-10 lg:bottom-10 xl:bottom-10 bg-orange-500 active:bg-teal-600 text-white text-base md:text-xl rounded-md shadow-lg flex items-center justify-center transition duration-300 ease-in-out chatbot-button">
             <RiMessage2Line className="mr-2" /> AI Chatbot
           </button>
+
+          <ScrollToTopButton />
+          <Footer className="mb-[58px] md:mb-0 " />
         </>
       )}
 
       <BottomNav />
-      <ScrollToTopButton />
-      <Footer className="mb-[58px] md:mb-0" />
     </>
   );
 }

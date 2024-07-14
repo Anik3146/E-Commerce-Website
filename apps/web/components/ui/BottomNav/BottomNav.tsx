@@ -79,7 +79,7 @@ export function BottomNav({ ...attributes }) {
   return (
     <>
       <nav
-        className="z-50 w-full fixed bottom-0 left-0 flex flex-row items-stretch md:hidden"
+        className="w-full fixed bottom-0 left-0 flex flex-row items-stretch md:hidden"
         data-testid="navbar-bottom"
         {...attributes}
       >

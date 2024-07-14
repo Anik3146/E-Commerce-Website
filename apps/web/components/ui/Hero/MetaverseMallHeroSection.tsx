@@ -78,11 +78,14 @@ export default function MetaverseMallHero() {
                 className="bg-white border border-gray-200 rounded-lg overflow-hidden"
               >
                 <div className="relative">
-                  <img
-                    src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/05/d3/dd/d2/jamuna-future-park.jpg?w=1200&h=-1&s=1"
-                    alt="Shopping Mall"
-                    className="w-full  h-100 object-cover rounded-t-lg"
-                  />
+                  <a href={`/shopping-mall/${mall.name}`}>
+                    <img
+                      src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/05/d3/dd/d2/jamuna-future-park.jpg?w=1200&h=-1&s=1"
+                      alt="Shopping Mall"
+                      className="w-full  h-100 object-cover rounded-t-lg"
+                    />
+                  </a>
+
                   <div className="absolute top-5 right-0 flex items-center">
                     <div className="bg-gray-600 bg-opacity-50 py-1 px-2 rounded-l-lg flex items-center">
                       <FaRegCalendarTimes className="text-white mr-1" />
