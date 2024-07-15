@@ -6,7 +6,7 @@ import { Badge, Search } from "~/components";
 export default function DrawerMenu() {
   return (
     <ul className="flex flex-wrap list-none p-0 text-black md:hidden">
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"
@@ -14,7 +14,7 @@ export default function DrawerMenu() {
           HOME
         </a>
       </li>
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/category"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"
@@ -22,7 +22,7 @@ export default function DrawerMenu() {
           PRODUCTS
         </a>
       </li>
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/shoppingMall"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"
@@ -30,7 +30,7 @@ export default function DrawerMenu() {
           SHOPPING MALLS
         </a>
       </li>
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/metaverseMall"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"
@@ -38,7 +38,7 @@ export default function DrawerMenu() {
           METAVERSE MALLS
         </a>
       </li>
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/offers"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"
@@ -46,7 +46,7 @@ export default function DrawerMenu() {
           OFFERS
         </a>
       </li>
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/cart"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"
@@ -54,7 +54,7 @@ export default function DrawerMenu() {
           MY CART
         </a>
       </li>
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/login"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"
@@ -62,7 +62,7 @@ export default function DrawerMenu() {
           LOGIN
         </a>
       </li>
-      <li className="w-full border-b border-gray-300">
+      <li className="w-full border-b border-gray-400">
         <a
           href="/signup"
           className="block w-full text-lg font-semibold text-center px-5 py-3 active:bg-primary-200"

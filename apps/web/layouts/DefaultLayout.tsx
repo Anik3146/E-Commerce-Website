@@ -4,7 +4,9 @@ import {
   SfDrawer,
   SfIconClose,
   SfIconExpandMore,
+  SfIconFavorite,
   SfIconMenu,
+  SfIconPerson,
   SfIconShoppingCart,
   useDisclosure,
 } from "@storefront-ui/react";
@@ -31,6 +33,7 @@ import {
 import SearchWithIcon from "~/components/ui/Search/customSearch";
 import { useCart } from "~/hooks";
 import { useCartStore } from "~/store/cart";
+import { useLoginInfo } from "~/store/login";
 
 type LayoutPropsType = PropsWithChildren & {
   breadcrumbs?: Breadcrumb[];
@@ -61,7 +64,8 @@ export function DefaultLayout({
 
   //For mobile view search bar
   const [searchButtonToggler, setSearchButtonToggler] = useState(false);
-  useEffect(() => {}, [cart]);
+  const { isLoggedIn } = useLoginInfo();
+  useEffect(() => {}, [cart, isLoggedIn]);
 
   return (
     <>
@@ -130,8 +134,8 @@ export function DefaultLayout({
                 placement="left"
                 className="md:hidden left-[50px] max-w-full text-black fixed h-screen" // Adjusted className
               >
-                <nav className="h-full bg-white">
-                  <div className="flex items-center justify-between p-4 border-b border-b-neutral-200 border-b-solid bg-white">
+                <nav className="h-full bg-gray-100">
+                  <div className="flex items-center justify-between p-4 border-b border-b-gray-400 border-b-solid bg-white">
                     <p className="typography-text-base font-medium">
                       <a href="/">
                         <Image
@@ -214,6 +218,19 @@ export function DefaultLayout({
                     OFFERS
                   </span>
                 </SfButton>
+
+                {isLoggedIn && (
+                  <SfButton
+                    className="px-4 bg-transparent  focus:outline-none focus:bg-blue-200 active:bg-primary-900 active:text-white font-body hidden md:inline-flex flex-1 sm:flex-initial"
+                    as={Link}
+                    href="/orders"
+                    variant="tertiary"
+                  >
+                    <span className="text-sm text-black   sm:text-base">
+                      ORDERS
+                    </span>
+                  </SfButton>
+                )}
               </div>{" "}
               <div className="flex items-center space-x-4 ml-auto">
                 <Search className="flex-1 pl-2 " />
@@ -237,25 +254,53 @@ export function DefaultLayout({
                     }
                   />
                 </nav>
-                <SfButton
-                  className="px-4 text-white  focus:outline-none focus:bg-blue-200 bg-primary-1 hover:bg-primary-900 active:bg-primary-700 font-body hidden md:inline-flex flex-1 sm:flex-initial"
-                  as={Link}
-                  href="/login"
-                  variant="tertiary"
-                >
-                  <span className="text-sm text-white sm:text-base">LOGIN</span>
-                </SfButton>
+                {!isLoggedIn ? (
+                  <SfButton
+                    className="px-4 text-white  focus:outline-none focus:bg-blue-200 bg-primary-1 hover:bg-primary-900 active:bg-primary-700 font-body hidden md:inline-flex flex-1 sm:flex-initial"
+                    as={Link}
+                    href="/login"
+                    variant="tertiary"
+                  >
+                    <span className="text-sm text-white sm:text-base">
+                      LOGIN
+                    </span>
+                  </SfButton>
+                ) : (
+                  <SfButton
+                    className="mr-2 -ml-0.5 text-primary-3 hidden md:inline-flex flex-1 sm:flex-initial  focus:outline-none focus:bg-blue-200  hover:text-white active:bg-primary-900 active:text-white"
+                    as={Link}
+                    href="/cart"
+                    aria-label={`Number in Cart: ${cartLineItemsCount}`}
+                    variant="tertiary"
+                    square
+                    slotPrefix={
+                      <SfIconFavorite className="text-black text-lg" />
+                    }
+                  />
+                )}
 
-                <SfButton
-                  className="px-4 bg-transparent  focus:outline-none focus:bg-blue-200 active:bg-primary-900 active:text-white font-body hidden md:inline-flex flex-1 sm:flex-initial"
-                  as={Link}
-                  href="/signup"
-                  variant="tertiary"
-                >
-                  <span className="text-sm text-black   sm:text-base">
-                    SIGN UP
-                  </span>
-                </SfButton>
+                {!isLoggedIn ? (
+                  <SfButton
+                    className="px-4 bg-transparent  focus:outline-none focus:bg-blue-200 active:bg-primary-900 active:text-white font-body hidden md:inline-flex flex-1 sm:flex-initial"
+                    as={Link}
+                    href="/signup"
+                    variant="tertiary"
+                  >
+                    <span className="text-sm text-black   sm:text-base">
+                      SIGN UP
+                    </span>
+                  </SfButton>
+                ) : (
+                  <SfButton
+                    className="mr-2 -ml-0.5 text-primary-3 hidden md:inline-flex flex-1 sm:flex-initial focus:outline-none focus:bg-blue-200  hover:text-white active:bg-primary-900 active:text-white"
+                    as={Link}
+                    href="/cart"
+                    aria-label={`Number in Cart: ${cartLineItemsCount}`}
+                    variant="tertiary"
+                    square
+                    slotPrefix={<SfIconPerson className="text-black text-lg" />}
+                  />
+                )}
               </div>
             </div>
           </div>
